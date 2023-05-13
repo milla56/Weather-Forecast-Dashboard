@@ -27,12 +27,32 @@ function currentWeather(city){
         method: "GET",
     }).then(function(response){
         console.log(response);
+        
+    // TODAY'S DATE
+    var todayDate = $("<p>");
+    todayDate.text(moment().format('dddd, MMM Do YYYY'));
+    today.append(todayDate);
+    
+    // Weather Icon for current day
+    var weatherImg = [];
+    weatherImg.attr("src", "https://openweathermap.org/img/wn/" + (response.weather[0].icon) + "@2x.png");
+    today.append(weatherImg);
 
       // TEMPERATURE IN CELSIUS 
       function tempC(C) {return Math.floor(((C - 32) * 5) / 9)}
       var currentTemp = "";
       currentTemp.text("Temperature " + tempC(response.main.temp)+ "&#x2103;");
       today.append(currentTemp);
+
+      //Wind
+      var currentWind = "";
+      currentWind.text("Wind Speed " + (response.wind.speed) + " km/h");
+      today.append(currentWind);
+
+      //Humidity
+      var currentHumidty = "";
+      currentHumidty.text("Humidity " + (response.main.humidity) + " %");
+      today.append(currentHumidty);
 
 
 
