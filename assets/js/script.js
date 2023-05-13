@@ -10,6 +10,11 @@ forecast = $("$forecast");
 searchInput = $("#search-input");
 var city = "";
 
+//store the cities in local storage
+function storeCity(){
+    localStorage.setItem(sCity,JSON.stringify(".list-group"));
+}
+
 //API KEY
 var APIKey = "758974132e2e4da4f5697230761019a3"; 
 
@@ -22,6 +27,12 @@ function currentWeather(city){
         method: "GET",
     }).then(function(response){
         console.log(response);
+
+      // TEMPERATURE IN CELSIUS 
+      function tempC(C) {return Math.floor(((C - 32) * 5) / 9)}
+      var currentTemp = "";
+      currentTemp.text("Temperature " + tempC(response.main.temp)+ "&#x2103;");
+      today.append(currentTemp);
 
 
 
