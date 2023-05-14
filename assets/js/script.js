@@ -8,7 +8,7 @@ weatherSearch = $(".weather-search");
 today = $("$today");
 forecast = $("$forecast");
 searchInput = $("#search-input");
-var city = "";
+var city = [];
 
 //store the cities in local storage
 function storeCity(){
@@ -55,7 +55,8 @@ function currentWeather(city){
       //Humidity
       var currentHumidty= $("<p>").text("Humidity " + (response.main.humidity) + " %");
       todayWeather.append(currentHumidty);
-
+     
+      // Prepend today's weather to today-class in html
       today.prepend(todayWeather);
     })
 }
@@ -64,26 +65,46 @@ function currentWeather(city){
 
 
 // add the passed city on the search history
-function addList(c){
-    var listEl = $("<li>"+c.toUpperCase()+"</li>");
-    $(listEl).attr("class","list-group");
-    $(listEl).attr("data-value",c.toUpperCase());
-    cityList.append(listEl);
- }
+// function addList(c){
+//     var listEl = $("<li>"+c.toUpperCase()+"</li>");
+//     $(listEl).attr("class","list-group");
+//     $(listEl).attr("data-value",c.toUpperCase());
+//     cityList.append(listEl);
+//  }
 
-// display city name again when in clicked in search history
-function historySearch(event){
-    var liEl = event.target;
-    if(event.target.matches("li")){
-        city = liEl.textContent.trim();
-        currentWeather(city);
-    }
-}
+// // display city name again when in clicked in search history
+// function historySearch(event){
+//     var liEl = event.target;
+//     if(event.target.matches("li")){
+//         city = liEl.textContent.trim();
+//         currentWeather(city);
+//     }
+// }
 
 
 // render function
+function renderButtons(){
+    cityList.empty();
 
+    for (var i=0; i<city.length; i++){
+        var cityButton = $("<button>");
+        cityButton.addClass("city-button");
+        cityButton.attr("data-name",city[i]);
+        cityButton.text(city[i]);
+        cityList.append(cityButton);
 
+    }
+
+}
+
+// search button 
+searchButton.on("click", function(event){
+    event.preventDefault();
+    
+    var cityInput = $("#search-input").val().trim();
+    city.push(cityInput);
+    renderButtons();
+})
 
 
 
