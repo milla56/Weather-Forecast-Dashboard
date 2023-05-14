@@ -62,6 +62,46 @@ function currentWeather(city){
 }
 
 // 5 day forecast
+function forecast(cityid){
+ var forcastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
+ $.ajax({
+    url:forcastURL,
+    method:"GET"
+}).then(function(response){
+
+for (i=0; i< response.list.length; i++){
+    // DIV class for forecast Weather
+    var forecastWeather = $("<div class='forecast-weather'>");
+
+    // Date- forecast
+    
+    var forecastDate = $("<h4>");
+    forecastDate = new Date((response.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
+    forecastWeather.append(forecastDate);
+
+     // Forecast Weather Icon
+     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.list.weather[0].icon+ "@2x.png");
+     forecastWeather.append(forecastIcon);
+
+     //Forecast Temp
+     var forecastTemp = $("<p>").text("Temperature " + tempC(response.main.temp)+ "&#x2103;");
+     forecastWeather.append(forecastTemp);
+
+     //Forecast Wind Speed
+     var forecastWind = $("<p>").text("Wind Speed " + (response.wind.speed) + " km/h");
+     forecastWeather.append(forecastWind);
+
+     // Forecast Humidity
+     var forecastHumidity = $("<p>").text("Humidity " + (response.main.humidity) + " %");
+     forecastWeather.append(forecastHumidity);
+
+}
+
+}
+
+
+
+)}
 
 
 // add the passed city on the search history
