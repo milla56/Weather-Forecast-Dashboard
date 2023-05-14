@@ -2,12 +2,12 @@ function initPage() {
 
 //Variables
 
-searchButton = $("#search-button");
-cityList = $(".list-group");
-weatherSearch = $(".weather-search");
-today = $("$today");
-forecast = $("$forecast");
-searchInput = $("#search-input");
+var searchButton = $("#search-button");
+var cityList = $(".list-group");
+var weatherSearch = $(".weather-search");
+var todayId = $("#today");
+var forecastId = $("#forecast");
+var searchInput = $("#search-input");
 var city = [];
 
 //store the cities in local storage
@@ -74,26 +74,31 @@ for (i=0; i< response.list.length; i++){
     var forecastWeather = $("<div class='forecast-weather'>");
 
     // Date- forecast
-    
+    index = response.list[((i+1)*8)-1];
+
     var forecastDate = $("<h4>");
-    forecastDate = new Date((response.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
+    forecastDate = new Date((index.dt)*1000).toLocaleDateString();
     forecastWeather.append(forecastDate);
 
      // Forecast Weather Icon
-     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.list.weather[0].icon+ "@2x.png");
+     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + index.weather[0].icon+ "@2x.png");
      forecastWeather.append(forecastIcon);
 
      //Forecast Temp
-     var forecastTemp = $("<p>").text("Temperature " + tempC(response.main.temp)+ "&#x2103;");
+     var forecastTemp = $("<p>").text("Temperature " + tempC(index.main.temp)+ "&#x2103;");
      forecastWeather.append(forecastTemp);
 
      //Forecast Wind Speed
-     var forecastWind = $("<p>").text("Wind Speed " + (response.wind.speed) + " km/h");
+     var forecastWind = $("<p>").text("Wind Speed " + (index.wind.speed) + " km/h");
      forecastWeather.append(forecastWind);
 
      // Forecast Humidity
-     var forecastHumidity = $("<p>").text("Humidity " + (response.main.humidity) + " %");
+     var forecastHumidity = $("<p>").text("Humidity " + (index.main.humidity) + " %");
      forecastWeather.append(forecastHumidity);
+
+      // Prepend today's weather to today-class in html
+      forecastId.prepend(forecastWeather);
+      console.log(forecastWeather);
 
 }
 
@@ -169,6 +174,7 @@ searchButton.on("click", function(event){
 
 
 }
+initPage();
 
 
 
