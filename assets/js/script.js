@@ -53,11 +53,31 @@ function currentWeather(city){
       var currentHumidty = "";
       currentHumidty.text("Humidity " + (response.main.humidity) + " %");
       today.append(currentHumidty);
-
-
-
     })
 }
+
+// 5 day forecast
+
+
+// add the passed city on the search history
+function addList(c){
+    var listEl = $("<li>"+c.toUpperCase()+"</li>");
+    $(listEl).attr("class","list-group");
+    $(listEl).attr("data-value",c.toUpperCase());
+    cityList.append(listEl);
+ }
+
+// display city name again when in clicked in search history
+function historySearch(event){
+    var liEl = event.target;
+    if(event.target.matches("li")){
+        city = liEl.textContent.trim();
+        currentWeather(city);
+    }
+}
+
+
+// render function
 
 
 
