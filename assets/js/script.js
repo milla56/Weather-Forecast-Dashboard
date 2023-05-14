@@ -29,10 +29,10 @@ function currentWeather(city){
         console.log(response);
         
     // creating div to store all of the information for the current weather
-    var todayWeather = $("<div class='today-weather'>");
+    var todayWeather = $("<div class=' row ml-1 today-weather'>");
 
     // TODAY'S DATE
-    var todayDate = $("<p>");
+    var todayDate = $("<h3 class = 'mr-3' >");
     todayDate.text(moment().format('dddd, MMM Do YYYY'));
     todayWeather.append(todayDate);
     
@@ -42,10 +42,10 @@ function currentWeather(city){
     todayWeather.append(weatherIcon);
 
       // TEMPERATURE IN CELSIUS 
-     //   var tempC = response.main.temp - 273.15; another way to find the temp in celsius
+       var tempC = Math.floor(response.main.temp - 273.15); 
     
-      function tempC(C) {return Math.floor(((C - 32) * 5) / 9)}    
-      var currentTemp=$("<p>").text("Temperature " + tempC(response.main.temp)+ "&#x2103;");
+    //   function tempC(C) {return Math.floor(((C - 32) * 5) / 9)}    
+      var currentTemp=$("<p>").text("Temperature " + tempC + " ℃");
       todayWeather.append(currentTemp);
 
       //Wind
@@ -57,7 +57,7 @@ function currentWeather(city){
       todayWeather.append(currentHumidty);
      
       // Prepend today's weather to today-class in html
-      today.prepend(todayWeather);
+      todayId.prepend(todayWeather);
     })
 }
 
@@ -71,12 +71,12 @@ function forecast(cityid){
 
 for (i=0; i< response.list.length; i++){
     // DIV class for forecast Weather
-    var forecastWeather = $("<div class='forecast-weather'>");
+    var forecastWeather = $("<div class='forecast-weather card-body m-4'>");
 
     // Date- forecast
     index = response.list[((i+1)*8)-1];
 
-    var forecastDate = $("<h4>");
+    var forecastDate = $("<h4 class = 'card-title'>");
     forecastDate = new Date((index.dt)*1000).toLocaleDateString();
     forecastWeather.append(forecastDate);
 
@@ -85,15 +85,15 @@ for (i=0; i< response.list.length; i++){
      forecastWeather.append(forecastIcon);
 
      //Forecast Temp
-     var forecastTemp = $("<p>").text("Temperature " + tempC(index.main.temp)+ "&#x2103;");
+     var forecastTemp = $("<p class = 'card-text'>").text("Temperature " + tempC(index.main.temp)+ "&#x2103;");
      forecastWeather.append(forecastTemp);
 
      //Forecast Wind Speed
-     var forecastWind = $("<p>").text("Wind Speed " + (index.wind.speed) + " km/h");
+     var forecastWind = $("<p class='card-text'>").text("Wind Speed " + (index.wind.speed) + " km/h");
      forecastWeather.append(forecastWind);
 
      // Forecast Humidity
-     var forecastHumidity = $("<p>").text("Humidity " + (index.main.humidity) + " %");
+     var forecastHumidity = $("<p class = 'card-text'>").text("Humidity " + (index.main.humidity) + " %");
      forecastWeather.append(forecastHumidity);
 
       // Prepend today's weather to today-class in html
@@ -149,6 +149,7 @@ searchButton.on("click", function(event){
     var cityInput = $("#search-input").val().trim();
     city.push(cityInput);
     renderButtons();
+    currentWeather(city);
 })
 
 
