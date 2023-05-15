@@ -26,13 +26,17 @@ function currentWeather(city){
         url:queryURL,
         method: "GET",
     }).then(function(response){
-        console.log(response);
+    
         
     // creating div to store all of the information for the current weather
-    var todayWeather = $("<div class=' row ml-1 today-weather'>");
+    var todayWeather = $("<div class= ' row ml-2 border border-dark rounded'>");
+
+    // Current City Name
+    var currentCity = $("<h2 class= 'city-name mb-1 mt-2 bolder'>").text(response.name);
+    todayWeather.append(currentCity);
 
     // TODAY'S DATE
-    var todayDate = $("<h3 class = 'mr-3' >");
+    var todayDate = $("<p>");
     todayDate.text(moment().format('dddd, MMM Do YYYY'));
     todayWeather.append(todayDate);
     
@@ -58,6 +62,8 @@ function currentWeather(city){
      
       // Prepend today's weather to today-class in html
       todayId.prepend(todayWeather);
+
+  
     })
 }
 
@@ -68,32 +74,32 @@ function forecast(cityid){
     url:forcastURL,
     method:"GET"
 }).then(function(response){
+    
+    cityid = response.id;
 
 for (i=0; i< response.list.length; i++){
     // DIV class for forecast Weather
     var forecastWeather = $("<div class='forecast-weather card-body m-4'>");
 
     // Date- forecast
-    index = response.list[((i+1)*8)-1];
-
     var forecastDate = $("<h4 class = 'card-title'>");
-    forecastDate = new Date((index.dt)*1000).toLocaleDateString();
+    forecastDate = new Date((response.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
     forecastWeather.append(forecastDate);
 
      // Forecast Weather Icon
-     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + index.weather[0].icon+ "@2x.png");
+     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.list[((i+1)*8)-1].weather[0].icon+ "@2x.png");
      forecastWeather.append(forecastIcon);
 
      //Forecast Temp
-     var forecastTemp = $("<p class = 'card-text'>").text("Temperature " + tempC(index.main.temp)+ "&#x2103;");
+     var forecastTemp = $("<p class = 'card-text'>").text("Temperature " + tempC(response.list[((i+1)*8)-1].main.temp)+ "&#x2103;");
      forecastWeather.append(forecastTemp);
 
      //Forecast Wind Speed
-     var forecastWind = $("<p class='card-text'>").text("Wind Speed " + (index.wind.speed) + " km/h");
+     var forecastWind = $("<p class='card-text'>").text("Wind Speed " + (response.list[((i+1)*8)-1].wind.speed) + " km/h");
      forecastWeather.append(forecastWind);
 
      // Forecast Humidity
-     var forecastHumidity = $("<p class = 'card-text'>").text("Humidity " + (index.main.humidity) + " %");
+     var forecastHumidity = $("<p class = 'card-text'>").text("Humidity " + (response.list[((i+1)*8)-1].main.humidity) + " %");
      forecastWeather.append(forecastHumidity);
 
       // Prepend today's weather to today-class in html
@@ -108,23 +114,6 @@ for (i=0; i< response.list.length; i++){
 
 )}
 
-
-// add the passed city on the search history
-// function addList(c){
-//     var listEl = $("<li>"+c.toUpperCase()+"</li>");
-//     $(listEl).attr("class","list-group");
-//     $(listEl).attr("data-value",c.toUpperCase());
-//     cityList.append(listEl);
-//  }
-
-// // display city name again when in clicked in search history
-// function historySearch(event){
-//     var liEl = event.target;
-//     if(event.target.matches("li")){
-//         city = liEl.textContent.trim();
-//         currentWeather(city);
-//     }
-// }
 
 
 // render function
