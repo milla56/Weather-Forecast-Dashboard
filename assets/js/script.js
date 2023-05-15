@@ -6,7 +6,7 @@ var searchButton = $("#search-button");
 var cityList = $(".list-group");
 var weatherSearch = $(".weather-search");
 var todayId = $("#today");
-var forecastId = $("#forecast");
+var forecastId = $(".forecastEl");
 var searchInput = $("#search-input");
 var city = [];
 
@@ -18,6 +18,15 @@ function storeCity(){
 //API KEY
 var APIKey = "758974132e2e4da4f5697230761019a3"; 
 
+// display weather 
+function displayWeather(event){
+    event.preventDefault();
+    if(searchInput.val().trim()!==""){
+        dCity=searchInput.val().trim();
+        currentWeather(city);
+    }
+}
+
 //getting the data from from server
 function currentWeather(city){
 
@@ -26,6 +35,7 @@ function currentWeather(city){
         url:queryURL,
         method: "GET",
     }).then(function(response){
+        console.log(queryURL);
     
         
     // creating div to store all of the information for the current weather
@@ -43,6 +53,7 @@ function currentWeather(city){
     // Weather Icon for current day
     var weatherImg = response.weather[0].icon;
     var weatherIcon= $("<img id='weatherImg'>").attr("src", "https://openweathermap.org/img/wn/" + weatherImg + "@2x.png");
+    weatherIcon.attr("alt", response.weather[0].description);
     todayWeather.append(weatherIcon);
 
       // TEMPERATURE IN CELSIUS 
@@ -62,55 +73,60 @@ function currentWeather(city){
      
       // Prepend today's weather to today-class in html
       todayId.prepend(todayWeather);
+      
 
+      var cityLatitude = response.coord.lat;
+      var cityLong = response.coord.lon;
   
     })
 }
 
 // 5 day forecast
 function forecast(cityid){
- var forcastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
+ var forcastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${cityid}&units=imperial&appid=${APIKey}`;;
  $.ajax({
     url:forcastURL,
     method:"GET"
-}).then(function(response){
+}).then(function(data){
     
-    cityid = response.id;
+    var dataList = data.list;
+    for (var i=0; i< dataList; i++){
+        if (dataList[i].dt_txt.split(' ') [1] === "12:00:00"){
 
-for (i=0; i< response.list.length; i++){
+    
     // DIV class for forecast Weather
-    var forecastWeather = $("<div class='forecast-weather card-body m-4'>");
+    var forecastWeather = $ ("<div>");
+    forecastWeather.addClass("col-md-2 forecastEl bg-primary text-white m-2 rounded");
 
     // Date- forecast
-    var forecastDate = $("<h4 class = 'card-title'>");
-    forecastDate = new Date((response.list[((i+1)*8)-1].dt)*1000).toLocaleDateString();
+    var forecastDate = $("<h4>");
+    forecastDate = new Date((dataList.dt)*1000).toLocaleDateString();
     forecastWeather.append(forecastDate);
 
      // Forecast Weather Icon
-     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.list[((i+1)*8)-1].weather[0].icon+ "@2x.png");
+     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + dataList.weather[0].icon+ "@2x.png");
      forecastWeather.append(forecastIcon);
 
      //Forecast Temp
-     var forecastTemp = $("<p class = 'card-text'>").text("Temperature " + tempC(response.list[((i+1)*8)-1].main.temp)+ "&#x2103;");
+     var forecastTemp = $("<p>").text("Temperature " + tempC(dataList.main.temp)+ "&#x2103;");
      forecastWeather.append(forecastTemp);
 
      //Forecast Wind Speed
-     var forecastWind = $("<p class='card-text'>").text("Wind Speed " + (response.list[((i+1)*8)-1].wind.speed) + " km/h");
+     var forecastWind = $("<p>").text("Wind Speed " + (dataList.wind.speed) + " km/h");
      forecastWeather.append(forecastWind);
 
      // Forecast Humidity
-     var forecastHumidity = $("<p class = 'card-text'>").text("Humidity " + (response.list[((i+1)*8)-1].main.humidity) + " %");
+     var forecastHumidity = $("<p>").text("Humidity " + (dataList.main.humidity) + " %");
      forecastWeather.append(forecastHumidity);
 
       // Prepend today's weather to today-class in html
       forecastId.prepend(forecastWeather);
-      console.log(forecastWeather);
+      
+        }
 
 }
 
 }
-
-
 
 )}
 
@@ -139,9 +155,18 @@ searchButton.on("click", function(event){
     city.push(cityInput);
     renderButtons();
     currentWeather(city);
+    
 })
 
+// display the past search again when the city button is clicked 
+function pastSearch(event){
+    var listC=event.target;
+    if (event.target.matches("li")){
+        city = listC.textContent.trim();
+        currentWeather(city);
+    }
 
+}
 
 
 
