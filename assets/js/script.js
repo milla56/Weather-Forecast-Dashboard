@@ -29,10 +29,10 @@ function currentWeather(city){
     
         
     // creating div to store all of the information for the current weather
-    var todayWeather = $("<div class= ' row ml-2 border border-dark rounded'>");
+    var todayWeather = $("<div class= ' card-body'>");
 
     // Current City Name
-    var currentCity = $("<h2 class= 'city-name mb-1 mt-2 bolder'>").text(response.name);
+    var currentCity = $(" <h3 id='city-name' class='city-name' align-middle>").text(response.name);
     todayWeather.append(currentCity);
 
     // TODAY'S DATE
@@ -42,22 +42,22 @@ function currentWeather(city){
     
     // Weather Icon for current day
     var weatherImg = response.weather[0].icon;
-    var weatherIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + weatherImg + "@2x.png");
+    var weatherIcon= $("<img id='weatherImg'>").attr("src", "https://openweathermap.org/img/wn/" + weatherImg + "@2x.png");
     todayWeather.append(weatherIcon);
 
       // TEMPERATURE IN CELSIUS 
        var tempC = Math.floor(response.main.temp - 273.15); 
     
     //   function tempC(C) {return Math.floor(((C - 32) * 5) / 9)}    
-      var currentTemp=$("<p>").text("Temperature " + tempC + " ℃");
+      var currentTemp=$("<p id='temperature'></p>").text("Temperature " + tempC + " ℃");
       todayWeather.append(currentTemp);
 
       //Wind
-      var currentWind= $("<p>").text("Wind Speed " + (response.wind.speed) + " km/h");
+      var currentWind= $("<p id='wind-speed'></p>").text("Wind Speed " + (response.wind.speed) + " km/h");
       todayWeather.append(currentWind);
 
       //Humidity
-      var currentHumidty= $("<p>").text("Humidity " + (response.main.humidity) + " %");
+      var currentHumidty= $("<p id='humidity'></p>").text("Humidity " + (response.main.humidity) + " %");
       todayWeather.append(currentHumidty);
      
       // Prepend today's weather to today-class in html
