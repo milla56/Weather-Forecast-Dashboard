@@ -8,6 +8,7 @@ var weatherSearch = $(".weather-search");
 var todayId = $("#today");
 var forecastId = $("#forecast");
 var searchInput = $("#search-input");
+var historyEl = ("#history");
 var city = [];
 
 //store the cities in local storage
@@ -134,25 +135,26 @@ function renderButtons(){
         cityButton.addClass("city-button");
         cityButton.attr("data-name",city[i]);
         cityButton.text(city[i]);
-        cityList.append(cityButton);
+        // cityList.append(cityButton);
 
+        cityButton.on("click", function(){
+            currentWeather(cityButton.value)
+        })
+        cityList.append(cityButton);
     }
 
 }
+
 
 // search button 
 searchButton.on("click", function(event){
     event.preventDefault();
 
-    
     var cityInput = $("#search-input").val().trim();
     city.push(cityInput); 
     // city=cityInput;
-
-    
     renderButtons();
-    currentWeather(city);
- 
+    currentWeather(cityInput);
     
 })
 
