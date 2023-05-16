@@ -6,7 +6,7 @@ var searchButton = $("#search-button");
 var cityList = $(".list-group");
 var weatherSearch = $(".weather-search");
 var todayId = $("#today");
-var forecastId = $(".forecastEl");
+var forecastId = $("#forecast");
 var searchInput = $("#search-input");
 var city = [];
 
@@ -18,14 +18,6 @@ function storeCity(){
 //API KEY
 var APIKey = "758974132e2e4da4f5697230761019a3"; 
 
-// display weather 
-function displayWeather(event){
-    event.preventDefault();
-    if(searchInput.val().trim()!==""){
-        dCity=searchInput.val().trim();
-        currentWeather(city);
-    }
-}
 
 //getting the data from from server
 function currentWeather(city){
@@ -71,6 +63,7 @@ function currentWeather(city){
       var currentHumidty= $("<p id='humidity'></p>").text("Humidity " + (response.main.humidity) + " %");
       todayWeather.append(currentHumidty);
      
+      todayId.html("")
       // Prepend today's weather to today-class in html
       todayId.prepend(todayWeather);
       
@@ -99,28 +92,28 @@ function forecast(cityid){
     forecastWeather.addClass("col-md-2 forecastEl bg-primary text-white m-2 rounded");
 
     // Date- forecast
-    var forecastDate = $("<h4>");
-    forecastDate = new Date((dataList.dt)*1000).toLocaleDateString();
+    var forecastDate = $("<h4>").text(response.list[i].dt_txt.split(" ")[0]);
+    // forecastDate = new Date((dataList.dt)*1000).toLocaleDateString();
     forecastWeather.append(forecastDate);
 
      // Forecast Weather Icon
-     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + dataList.weather[0].icon+ "@2x.png");
+     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + dataList[i].weather[0].icon+ "@2x.png");
      forecastWeather.append(forecastIcon);
 
      //Forecast Temp
-     var forecastTemp = $("<p>").text("Temperature " + tempC(dataList.main.temp)+ "&#x2103;");
+     var forecastTemp = $("<p>").text("Temperature " + tempC(dataList[i].main.temp)+ "&#x2103;");
      forecastWeather.append(forecastTemp);
 
      //Forecast Wind Speed
-     var forecastWind = $("<p>").text("Wind Speed " + (dataList.wind.speed) + " km/h");
+     var forecastWind = $("<p>").text("Wind Speed " + (dataList[i].wind.speed) + " km/h");
      forecastWeather.append(forecastWind);
 
      // Forecast Humidity
-     var forecastHumidity = $("<p>").text("Humidity " + (dataList.main.humidity) + " %");
+     var forecastHumidity = $("<p>").text("Humidity " + (dataList[i].main.humidity) + " %");
      forecastWeather.append(forecastHumidity);
 
       // Prepend today's weather to today-class in html
-      forecastId.prepend(forecastWeather);
+    $('#fivedays').append(forecastWeather);
       
         }
 
@@ -150,11 +143,16 @@ function renderButtons(){
 // search button 
 searchButton.on("click", function(event){
     event.preventDefault();
+
     
     var cityInput = $("#search-input").val().trim();
-    city.push(cityInput);
+    city.push(cityInput); 
+    // city=cityInput;
+
+    
     renderButtons();
     currentWeather(city);
+ 
     
 })
 
