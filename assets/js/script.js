@@ -76,6 +76,9 @@ function currentWeather(city){
     })
 }
 
+
+
+
 // 5 day forecast
 function forecast(cityid){
  var forcastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
@@ -128,6 +131,7 @@ function forecast(cityid){
 
 
 
+
 // render function
 function renderButtons(){
     cityList.empty();
@@ -140,7 +144,7 @@ function renderButtons(){
         // cityList.append(cityButton);
 
         cityButton.on("click", function(){
-            currentWeather(city.value);
+            currentWeather(cityList.value);
             
         })
         cityList.append(cityButton);
@@ -148,6 +152,7 @@ function renderButtons(){
     }
     
 }
+
 
 
 // search button 
