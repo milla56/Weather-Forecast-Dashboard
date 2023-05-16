@@ -32,7 +32,8 @@ function currentWeather(city){
     
         
     // creating div to store all of the information for the current weather
-    var todayWeather = $("<div class= ' card-body'>");
+    var todayWeather = $("<div class= 'card-body'>");
+    todayWeather.addClass("border border-dark rounded");
 
     // Current City Name
     var currentCity = $(" <h3 id='city-name' class='city-name' align-middle>").text(response.name);
@@ -77,7 +78,7 @@ function currentWeather(city){
 
 // 5 day forecast
 function forecast(cityid){
- var forcastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${cityid}&units=imperial&appid=${APIKey}`;;
+ var forcastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
  $.ajax({
     url:forcastURL,
     method:"GET"
@@ -114,7 +115,8 @@ function forecast(cityid){
      forecastWeather.append(forecastHumidity);
 
       // Prepend today's weather to today-class in html
-    $('#fivedays').append(forecastWeather);
+   forecastId.append(forecastWeather);
+   
       
         }
 
@@ -138,11 +140,13 @@ function renderButtons(){
         // cityList.append(cityButton);
 
         cityButton.on("click", function(){
-            currentWeather(cityButton.value)
+            currentWeather(city.value);
+            
         })
         cityList.append(cityButton);
+      
     }
-
+    
 }
 
 
@@ -155,18 +159,11 @@ searchButton.on("click", function(event){
     // city=cityInput;
     renderButtons();
     currentWeather(cityInput);
+    forecast(cityInput);
     
 })
 
-// display the past search again when the city button is clicked 
-function pastSearch(event){
-    var listC=event.target;
-    if (event.target.matches("li")){
-        city = listC.textContent.trim();
-        currentWeather(city);
-    }
 
-}
 
 
 
