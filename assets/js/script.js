@@ -159,14 +159,16 @@ function renderButtons(){
         cityButton.addClass("city-button");
         cityButton.attr("data-name",city[i]);
         cityButton.text(city[i]);
-        // cityList.append(cityButton);
-
-        cityButton.on("click", function(){
-            currentWeather(cityList);
-            
-        })
         cityList.append(cityButton);
-      
+
+        // cityButton.on("click", function(){
+        //     currentWeather(cityList.value);
+        //     })
+        
+        cityList.on("click", ".city-button",function(){
+            var searchValue = $(this).attr("data-search");
+            currentWeather(city);
+            })
     }
     
 }
