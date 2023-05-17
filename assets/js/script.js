@@ -180,6 +180,7 @@ searchButton.on("click", function(event){
     city.push(cityInput); 
     // city=cityInput;
     renderButtons();
+    storeCity();
     currentWeather(cityInput);
     forecast(cityInput);
     
@@ -187,7 +188,17 @@ searchButton.on("click", function(event){
 
 
 
+// calling current weather and forecast weather function
+// function display() {
+//     var thisCity = $(this).attr("data-city");
 
+//     todayId.empty();
+//     currentWeather(city);
+
+//     forecastId.empty();
+//     forecast(cityid);
+    
+// }
 
 
 
