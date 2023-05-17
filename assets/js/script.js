@@ -97,54 +97,55 @@ function currentWeather(city){
 
 
 // 5 day forecast
+
 function forecast(cityid){
- var forcastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
- $.ajax({
-    url:forcastURL,
-    method:"GET"
-}).then(function(data){
-    
-    var dataList = data.list;
-    for (var i=0; i< dataList; i++){
-        if (dataList[i].dt_txt.split(' ') [1] === "12:00:00"){
-
-    
-    // DIV class for forecast Weather
-    var forecastWeather = $ ("<div>");
-    forecastWeather.addClass("col-md-2 forecastEl bg-primary text-white m-2 rounded");
-
-    // Date- forecast
-    var forecastDate = $("<h4>").text(response.list[i].dt_txt.split(" ")[0]);
-    // forecastDate = new Date((dataList.dt)*1000).toLocaleDateString();
-    forecastWeather.append(forecastDate);
-
-     // Forecast Weather Icon
-     var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + dataList[i].weather[0].icon+ "@2x.png");
-     forecastWeather.append(forecastIcon);
-
-     //Forecast Temp
-     var forecastTemp = $("<p>").text("Temperature " + tempC(dataList[i].main.temp)+ "&#x2103;");
-     forecastWeather.append(forecastTemp);
-
-     //Forecast Wind Speed
-     var forecastWind = $("<p>").text("Wind Speed " + (dataList[i].wind.speed) + " km/h");
-     forecastWeather.append(forecastWind);
-
-     // Forecast Humidity
-     var forecastHumidity = $("<p>").text("Humidity " + (dataList[i].main.humidity) + " %");
-     forecastWeather.append(forecastHumidity);
-
-      // Prepend today's weather to today-class in html
-   forecastId.append(forecastWeather);
-   
+    var forcastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
+    $.ajax({
+       url:forcastURL,
+       method:"GET"
+   }).then(function(data){
+       
       
-        }
-
-}
-
-}
-
-)}
+       for (var i=0; i< dataList.length; i++){
+           if (data.list[i].dt_txt.icludes("12:00") !== -1){
+            var dataList = data.list[i];
+       
+       // DIV class for forecast Weather
+       var forecastWeather = $ ("<div>");
+       forecastWeather.addClass("col-md-2 forecastEl bg-primary text-white m-2 rounded");
+   
+       // Date- forecast
+       var forecastDate = $("<h4>");
+       forecastDate = new Date((dataList.dt)*1000).toLocaleDateString();
+       forecastWeather.append(forecastDate);
+   
+        // Forecast Weather Icon
+        var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + dataList.weather[0].icon+ "@2x.png");
+        forecastWeather.append(forecastIcon);
+   
+        //Forecast Temp
+        var forecastTemp = $("<p>").text("Temperature " + tempC(dataList.main.temp)+ "&#x2103;");
+        forecastWeather.append(forecastTemp);
+   
+        //Forecast Wind Speed
+        var forecastWind = $("<p>").text("Wind Speed " + (dataList.wind.speed) + " km/h");
+        forecastWeather.append(forecastWind);
+   
+        // Forecast Humidity
+        var forecastHumidity = $("<p>").text("Humidity " + (dataList.main.humidity) + " %");
+        forecastWeather.append(forecastHumidity);
+   
+         // Prepend today's weather to today-class in html
+      forecastId.append(forecastWeather);
+      
+         
+           }
+   
+   }
+   
+   }
+   
+   )}
 
 
 
