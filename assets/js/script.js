@@ -13,7 +13,24 @@ var city = [];
 
 //store the cities in local storage
 function storeCity(){
-    localStorage.setItem(sCity,JSON.stringify(".list-group"));
+    localStorage.setItem("sCity",JSON.stringify(".list-group"));
+}
+
+// loads the city list from local storage and calls api to get data for last searched city 
+function loadCity() {
+    var cityEl = JSON.parse(localStorage.getItem("sCity"));
+
+    if (cityEl !== null) {
+        cityList = cityEl;
+    }
+
+    renderButtons();
+
+    if (cityList) {
+        var thisCity = cityList[cityList.length - 1]
+        currentWeather(city);
+        forecast(cityid);
+    }
 }
 
 //API KEY
@@ -144,7 +161,7 @@ function renderButtons(){
         // cityList.append(cityButton);
 
         cityButton.on("click", function(){
-            currentWeather(cityList.value);
+            currentWeather(cityList);
             
         })
         cityList.append(cityButton);
