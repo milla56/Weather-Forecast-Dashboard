@@ -104,44 +104,71 @@ function forecast(cityid){
        url:forcastURL,
        method:"GET"
    }).then(function(data){
+
+    // array for the next five days 
+    var forecastDays = [];
+
+    for (var i = 0; i < 5; i++) {
+        let forecastDate = moment().add(i + 1, 'days').format('DD/MM/YYYY');
+
+        forecastDays.push(forecastDate);
+    }
        
-      
-       for (var i=0; i< dataList.length; i++){
-           if (data.list[i].dt_txt.icludes("12:00") !== -1){
-            var dataList = data.list[i];
+    
+      // for each day  a forecast card is created
+       for (var i=0; i< forecastDays.length; i++){
+         var dataIndex = i * 8 + 4;
        
+
+        // Five days forecast title 
+        var fiveDaysEl = $('<h2>').text('5-Day Forecast:').attr({id: 'five-day-header'});
+       
+
        // DIV class for forecast Weather
-       var forecastWeather = $ ("<div>");
-       forecastWeather.addClass("col-md-2 forecastEl bg-primary text-white m-2 rounded");
+       var forecastDiv = $ ("<div>");
+       forecastDiv.addClass('col3');
+
+       // DIV card body
+       var cardBody = $('<div>').addClass('card-body');
    
-       // Date- forecast
-       var forecastDate = $("<h4>");
-       forecastDate = new Date((dataList.dt)*1000).toLocaleDateString();
-       forecastWeather.append(forecastDate);
+    //    // Date- forecast
+    //    var forecastDate = $("<h4>");
+    //    forecastDate = new Date((dataList.dt)*1000).toLocaleDateString();
+      
    
         // Forecast Weather Icon
-        var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + dataList.weather[0].icon+ "@2x.png");
-        forecastWeather.append(forecastIcon);
+        var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + data.list[dataIndex].weather[0].icon+ "@2x.png");
+        forecastIcon.attr("alt", data.list[dataIndex].weather[0].description)
+        
    
         //Forecast Temp
-        var forecastTemp = $("<p>").text("Temperature " + tempC(dataList.main.temp)+ "&#x2103;");
-        forecastWeather.append(forecastTemp);
+        var forecastTemp = $("<p>").text("Temperature " + tempC(data.list[dataIndex].main.temp)+ "&#x2103;").addClass('card-text');
+       
    
         //Forecast Wind Speed
-        var forecastWind = $("<p>").text("Wind Speed " + (dataList.wind.speed) + " km/h");
-        forecastWeather.append(forecastWind);
+        var forecastWind = $("<p>").text("Wind Speed " + (data.list[dataIndex].wind.speed) + " km/h").addClass('card-text');
+        
    
         // Forecast Humidity
-        var forecastHumidity = $("<p>").text("Humidity " + (dataList.main.humidity) + " %");
-        forecastWeather.append(forecastHumidity);
+        var forecastHumidity = $("<p>").text("Humidity " + (data.list[dataIndex].main.humidity) + " %").addClass('card-text');
+        
    
-         // Prepend today's weather to today-class in html
-      forecastId.append(forecastWeather);
+         // Appending all forecast elements to the div element
+      forecastDiv.append(fiveDaysEl);
+      forecastDiv.append(cardBody);
+      forecastDiv.append(forecastDate);
+      forecastDiv.append(forecastIcon);
+      forecastDiv.append(forecastTemp);
+      forecastDiv.append(forecastWind);
+      forecastDiv.append(forecastHumidity);
+
+      // Appending the div element to forecast id
+      forecastId.append(forecastDiv);
       
          
            }
    
-   }
+   
    
    }
    
