@@ -114,7 +114,7 @@ function forecast(cityid){
         forecastDays.push(forecastDate);
     }
        
-    
+
       // for each day  a forecast card is created
        for (var i=0; i< forecastDays.length; i++){
          var dataIndex = i * 8 + 4;
@@ -193,8 +193,10 @@ function renderButtons(){
         //     })
         
         cityList.on("click", ".city-button",function(){
-            var searchValue = $(this).attr("data-search");
-            currentWeather(city);
+            var thisCity = $(this)[0].textContent;
+            console.log(thisCity, "thisCity");
+            currentWeather(thisCity);
+            forecast(thisCity);
             })
     }
     
