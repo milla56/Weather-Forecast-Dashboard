@@ -12,8 +12,10 @@ var historyEl = ("#history");
 var city = [];
 
 //store the cities in local storage
-function storeCity(){
-    localStorage.setItem("sCity",JSON.stringify(".list-group"));
+function storeCity(name){
+    var savedCity = JSON.parse(localStorage.getItem("sCity")) || [] ;
+    savedCity.push(name);
+    localStorage.setItem("sCity",JSON.stringify(name));
 }
 
 // loads the city list from local storage and calls api to get data for last searched city 
@@ -45,9 +47,10 @@ function currentWeather(city){
         url:queryURL,
         method: "GET",
     }).then(function(response){
-        console.log(queryURL);
+        console.log(response);
     
-        
+        storeCity(response.name);
+
     // creating div to store all of the information for the current weather
     var todayWeather = $("<div class= 'card-body'>");
     todayWeather.addClass("border border-dark rounded");
@@ -99,7 +102,7 @@ function currentWeather(city){
 // 5 day forecast
 
 function forecast(cityid){
-    var forcastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
+    var forcastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityid + "&units=metric&appid=" + APIKey;
     $.ajax({
        url:forcastURL,
        method:"GET"
@@ -115,10 +118,14 @@ function forecast(cityid){
     }
        
 
+   // Forecast is empty 
+    forecastId.empty();
+    
       // for each day  a forecast card is created
        for (var i=0; i< forecastDays.length; i++){
          var dataIndex = i * 8 + 4;
        
+
 
         // Five days forecast title 
         var fiveDaysEl = $('<h2>').text('5-Day Forecast:').attr({id: 'five-day-header'});
@@ -142,7 +149,7 @@ function forecast(cityid){
         
    
         //Forecast Temp
-        var forecastTemp = $("<p>").text("Temperature " + tempC(data.list[dataIndex].main.temp)+ "&#x2103;").addClass('card-text');
+        var forecastTemp = $("<p>").text("Temperature " + data.list[dataIndex].main.temp + "\u2103").addClass('card-text');
        
    
         //Forecast Wind Speed
@@ -154,13 +161,14 @@ function forecast(cityid){
         
    
          // Appending all forecast elements to the div element
-      forecastDiv.append(fiveDaysEl);
+    //   forecastDiv.append(fiveDaysEl);
       forecastDiv.append(cardBody);
-      forecastDiv.append(forecastDate);
+      forecastDiv.append(forecastDays[i]);
       forecastDiv.append(forecastIcon);
       forecastDiv.append(forecastTemp);
       forecastDiv.append(forecastWind);
       forecastDiv.append(forecastHumidity);
+      console.log(forecastDiv)
 
       // Appending the div element to forecast id
       forecastId.append(forecastDiv);
@@ -212,7 +220,6 @@ searchButton.on("click", function(event){
     city.push(cityInput); 
     // city=cityInput;
     renderButtons();
-    storeCity();
     currentWeather(cityInput);
     forecast(cityInput);
     
