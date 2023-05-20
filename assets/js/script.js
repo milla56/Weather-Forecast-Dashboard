@@ -8,7 +8,8 @@ var weatherSearch = $(".weather-search");
 var todayId = $("#today");
 var forecastId = $("#forecast");
 var searchInput = $("#search-input");
-var historyEl = ("#history");
+var historyEl = $("#history");
+var fiveDayHeader = $("#five-day");
 var city = [];
 
 //store the cities in local storage
@@ -49,7 +50,7 @@ function currentWeather(city){
     }).then(function(response){
         console.log(response);
     
-        storeCity(response.name);
+        // storeCity(response.name);
 
     // creating div to store all of the information for the current weather
     var todayWeather = $("<div class= 'card-body'>");
@@ -88,6 +89,9 @@ function currentWeather(city){
       todayId.html("")
       // Prepend today's weather to today-class in html
       todayId.prepend(todayWeather);
+
+      todayId.css("background-color","#323a47");
+      todayId.css("color","#05D9FF")
       
 
       var cityLatitude = response.coord.lat;
@@ -95,6 +99,7 @@ function currentWeather(city){
   
     })
 }
+
 
 
 
@@ -112,52 +117,57 @@ function forecast(cityid){
     var forecastDays = [];
 
     for (var i = 0; i < 5; i++) {
-        let forecastDate = moment().add(i + 1, 'days').format('DD/MM/YYYY');
+        let forecastDate = $("<h5>").text(moment().add(i + 1, 'days').format('DD/MM/YYYY'));
 
         forecastDays.push(forecastDate);
+        
     }
        
-
-   // Forecast is empty 
-    forecastId.empty();
     
+   // Forecast is empty before
+    forecastId.empty();
+
+    // 5 days forecast Title
+    var headerFive = $("<h2>").text("5-Day Forecast:");
+fiveDayHeader.append(headerFive);
+    
+
       // for each day  a forecast card is created
        for (var i=0; i< forecastDays.length; i++){
          var dataIndex = i * 8 + 4;
-       
-
-
-        // Five days forecast title 
-        var fiveDaysEl = $('<h2>').text('5-Day Forecast:').attr({id: 'five-day-header'});
-       
+    
 
        // DIV class for forecast Weather
        var forecastDiv = $ ("<div>");
-       forecastDiv.addClass('col3');
+       forecastDiv.addClass('col3 border border-dark rounded');
+       forecastDiv.css("background-color" , "#323a47");
+       forecastDiv.css("margin-right", "20px");
+       
 
        // DIV card body
        var cardBody = $('<div>').addClass('card-body');
+       
    
-    //    // Date- forecast
-    //    var forecastDate = $("<h4>");
-    //    forecastDate = new Date((dataList.dt)*1000).toLocaleDateString();
-      
    
         // Forecast Weather Icon
         var forecastIcon= $("<img>").attr("src", "https://openweathermap.org/img/wn/" + data.list[dataIndex].weather[0].icon+ "@2x.png");
-        forecastIcon.attr("alt", data.list[dataIndex].weather[0].description)
+        forecastIcon.attr("alt", data.list[dataIndex].weather[0].description);
+        forecastIcon.css("align","left");
         
    
         //Forecast Temp
         var forecastTemp = $("<p>").text("Temperature " + data.list[dataIndex].main.temp + "\u2103").addClass('card-text');
+        forecastTemp.css("color", "#05D9FF");
        
    
         //Forecast Wind Speed
         var forecastWind = $("<p>").text("Wind Speed " + (data.list[dataIndex].wind.speed) + " km/h").addClass('card-text');
+        forecastWind.css("color", "#05D9FF");
         
    
         // Forecast Humidity
         var forecastHumidity = $("<p>").text("Humidity " + (data.list[dataIndex].main.humidity) + " %").addClass('card-text');
+        forecastHumidity.css("color", "#05D9FF");
         
    
          // Appending all forecast elements to the div element
@@ -173,12 +183,10 @@ function forecast(cityid){
       // Appending the div element to forecast id
       forecastId.append(forecastDiv);
       
-         
+       
            }
    
-   
-   
-   }
+    }
    
    )}
 
@@ -196,9 +204,8 @@ function renderButtons(){
         cityButton.text(city[i]);
         cityList.append(cityButton);
 
-        // cityButton.on("click", function(){
-        //     currentWeather(cityList.value);
-        //     })
+
+      // Clicking on the list of cities, the clicked city will appear
         
         cityList.on("click", ".city-button",function(){
             var thisCity = $(this)[0].textContent;
@@ -207,6 +214,12 @@ function renderButtons(){
             forecast(thisCity);
             })
     }
+    
+    cityButton.css("background-color","white");
+    cityButton.css("text-align","left");
+   cityButton.hover(function(){
+    cityButton.css("background-color", "#05D9FF")
+   })
     
 }
 
@@ -222,36 +235,9 @@ searchButton.on("click", function(event){
     renderButtons();
     currentWeather(cityInput);
     forecast(cityInput);
+    var savedCity = JSON.parse(localStorage.getItem("sCity")) || [] ;
     
 })
-
-
-
-// calling current weather and forecast weather function
-// function display() {
-//     var thisCity = $(this).attr("data-city");
-
-//     todayId.empty();
-//     currentWeather(city);
-
-//     forecastId.empty();
-//     forecast(cityid);
-    
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

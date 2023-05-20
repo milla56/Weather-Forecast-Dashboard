@@ -1,0 +1,51 @@
+ :root {
+  --background: #222831;
+  --lightBlue: #05D9FF;
+  --blue: #a7c3c9;
+  --bck2: #323a47;
+  --hover: #4f5b70;
+}
+
+
+h1 {
+  
+  background-color: var(--bck2);
+  color: var(--lightBlue);
+  height: 60px;
+ 
+}
+
+h2 {
+  color: var(--lightBlue);
+}
+.container-fluid {
+  background-color: #222831;
+}
+
+/* SEARCH BAR */
+
+#search-button {
+  background-color: var(--lightBlue);
+  border-radius: 20px;
+  
+}
+
+.weather-search{
+  width: 230px;
+  background-color: var(--bck2);
+  border-radius: 20px;
+  color: white;
+}
+
+
+
+
+h3{
+  color: var(--lightBlue);
+}
+
+
+h5{
+  color: white;
+}
+
