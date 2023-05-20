@@ -16,7 +16,7 @@ var city = [];
 function storeCity(name){
     var savedCity = JSON.parse(localStorage.getItem("sCity")) || [] ;
     savedCity.push(name);
-    localStorage.setItem("sCity",JSON.stringify(name));
+    localStorage.setItem("sCity",JSON.stringify(savedCity));
 }
 
 // loads the city list from local storage and calls api to get data for last searched city 
@@ -50,7 +50,7 @@ function currentWeather(city){
     }).then(function(response){
         console.log(response);
     
-        // storeCity(response.name);
+        storeCity(response.name);
 
     // creating div to store all of the information for the current weather
     var todayWeather = $("<div class= 'card-body'>");
