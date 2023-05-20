@@ -11,16 +11,32 @@ h1 {
   
   background-color: var(--bck2);
   color: var(--lightBlue);
-  height: 60px;
+  
  
 }
 
-h2 {
+h2{
   color: var(--lightBlue);
 }
+h3{
+  color: var(--lightBlue);
+}
+
+
+h5{
+  color: white;
+}
+
+#formHeading {
+  color: var(--lightBlue);
+  margin-bottom: 5%;
+}
+
 .container-fluid {
   background-color: #222831;
 }
+
+
 
 /* SEARCH BAR */
 
@@ -39,13 +55,4 @@ h2 {
 
 
 
-
-h3{
-  color: var(--lightBlue);
-}
-
-
-h5{
-  color: white;
-}
 

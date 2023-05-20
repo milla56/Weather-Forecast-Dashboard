@@ -115,6 +115,7 @@ function forecast(cityid){
 
     // array for the next five days 
     var forecastDays = [];
+   
 
     for (var i = 0; i < 5; i++) {
         let forecastDate = $("<h5>").text(moment().add(i + 1, 'days').format('DD/MM/YYYY'));
@@ -127,9 +128,6 @@ function forecast(cityid){
    // Forecast is empty before
     forecastId.empty();
 
-    // 5 days forecast Title
-    var headerFive = $("<h2>").text("5-Day Forecast:");
-fiveDayHeader.append(headerFive);
     
 
       // for each day  a forecast card is created
@@ -203,7 +201,12 @@ function renderButtons(){
         cityButton.attr("data-name",city[i]);
         cityButton.text(city[i]);
         cityList.append(cityButton);
-
+         // CITY BUTTON STYLE
+    cityButton.css("background-color","white");
+    cityButton.css("width","250px");
+    cityButton.css("border-radius","20px");
+    cityButton.css("text-align","left");
+  
 
       // Clicking on the list of cities, the clicked city will appear
         
@@ -214,13 +217,8 @@ function renderButtons(){
             forecast(thisCity);
             })
     }
-    
-    cityButton.css("background-color","white");
-    cityButton.css("text-align","left");
-   cityButton.hover(function(){
-    cityButton.css("background-color", "#05D9FF")
-   })
-    
+
+   
 }
 
 
@@ -231,11 +229,9 @@ searchButton.on("click", function(event){
 
     var cityInput = $("#search-input").val().trim();
     city.push(cityInput); 
-    // city=cityInput;
     renderButtons();
     currentWeather(cityInput);
     forecast(cityInput);
-    var savedCity = JSON.parse(localStorage.getItem("sCity")) || [] ;
     
 })
 
