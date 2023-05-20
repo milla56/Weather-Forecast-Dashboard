@@ -140,6 +140,7 @@ function forecast(cityid){
        forecastDiv.addClass('col3 border border-dark rounded');
        forecastDiv.css("background-color" , "#323a47");
        forecastDiv.css("margin-right", "20px");
+       forecastDiv.css("margin-top", "15px");
        
 
        // DIV card body
