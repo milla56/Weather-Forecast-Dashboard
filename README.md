@@ -7,7 +7,7 @@
 
 ## Installation
 
-Follow the link for the deployed website [Weather-Dashboard](https://milla56.github.io/Lubomila-s-Weather-Dashboard/) 
+Follow the link for the deployed website [Weather-Dashboard](https://milla56.github.io/Weather-Forecast-Dashboard/) 
 
 ## User Story 
 AS A traveler
